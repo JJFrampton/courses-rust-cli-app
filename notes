@@ -1,0 +1,49 @@
+# Rust learning notes
+
+#### Using boxes
+- This is a way to push a primative (defaults to using stack mem) to the heap
+- The box is essentially a pointer to a point in the heap (with additional methods)
+  - This is called a "smart pointer", a wrapper around a regular pointer with additional functions
+
+#### Basic data types
+
+- u8 - unsigned 8 bit / 1 byte integer
+- i8 - signed 8 bit / 1 byte integer
+- 8,32,64,128
+- usize, isize - architecture dependant types
+  - if 64bit cpu, usize will be an unsigned 64 bit
+- f32 - floating point number
+- f63 - double precision of ^
+- bool - 1 bit
+- char - unicode value, always 4 bytes (if you use ascii only, you will be wasting space)
+
+#### Macros
+
+- Macros can dynamically accept a variable amount of arguments of various types
+
+#### Rules of ownership
+1. Each value in rust is owned by a variable
+2. When the owner goes out of scope, the value will be deallocated
+3. There can only be one owner at a time
+  - Eliminates double free errors
+
+#### Ownership example
+
+(pass by value)
+fn something(s: String) {}
+let mut a = String::new();
+something(a); // value of "a" changes ownership here !!
+println!("{}",a) // doesnt exist anymore !!
+// When "a" gets passed into the something() function, that value
+// is now owned by the something() function and will only exist in that scope.
+// Once the something() function finishes the value will be gone,
+// as it will be out of scope.
+// This is because there can only be one owner of the value
+// Ownership of the value will move to the "s" variable inside the something() function
+
+(pass by reference)
+// alternative would be to pass in a pointer
+fn something(s: String) {}
+let mut a = String::new();
+something(&mut a);
+println!("{}",a)
